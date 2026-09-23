@@ -1,0 +1,11 @@
+
+
+# Logs / misc
+*.log
+.DS_Store
+.autoclaw
+
+# Node / Vite
+node_modules/
+dist/
+.vite/
