@@ -583,6 +583,64 @@ h1, h2, h3, h4, .brand-title, .btn, .tab-btn {
   border: 1px solid var(--border-glass);
   position: sticky;
   top: 6rem;
+  min-height: 220px;
+}
+
+/* ── Settings panel empty state (before upload) ── */
+.remover-right-empty {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 0.65rem;
+  padding: 1.5rem 0.5rem;
+}
+
+.remover-right-empty-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: var(--radius-lg);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-glass);
+  color: var(--brand-primary-hover);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.25rem;
+}
+
+.remover-right-empty-title {
+  font-family: 'Space Grotesk', 'Ubuntu', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.remover-right-empty-desc {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+  max-width: 220px;
+}
+
+.remover-right-empty-chips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.4rem;
+  margin-top: 0.5rem;
+}
+
+.remover-right-empty-chip {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--text-dim);
+  background: var(--bg-card-solid);
+  border: 1px solid var(--border-glass);
+  border-radius: 9999px;
+  padding: 0.25rem 0.6rem;
 }
 
 .detect-badge {

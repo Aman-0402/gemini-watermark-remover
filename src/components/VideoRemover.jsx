@@ -132,8 +132,27 @@ export default function VideoRemover() {
           </div>
         </div>
 
-        <div ref={refs.tunerRef} id="video-tuner-container" className={`remover-right${showTuner ? '' : ' hidden'}`}>
-          <div className="mode-toggle">
+        <div ref={refs.tunerRef} id="video-tuner-container" className="remover-right">
+          {!showTuner && (
+            <div className="remover-right-empty">
+              <div className="remover-right-empty-icon">
+                <iconify-icon icon="ph:sliders-horizontal-bold" width="26"></iconify-icon>
+              </div>
+              <p className="remover-right-empty-title">Removal settings</p>
+              <p className="remover-right-empty-desc">
+                Upload a video to unlock strength, size, position, and removal-mode controls.
+              </p>
+              <div className="remover-right-empty-chips">
+                <span className="remover-right-empty-chip">Unblend</span>
+                <span className="remover-right-empty-chip">Strong</span>
+                <span className="remover-right-empty-chip">Blur</span>
+                <span className="remover-right-empty-chip">Pixelate</span>
+                <span className="remover-right-empty-chip">Blackout</span>
+              </div>
+            </div>
+          )}
+
+          <div className={`mode-toggle${showTuner ? '' : ' hidden'}`}>
             <span className="mode-toggle-label">Removal Mode (combine any)</span>
             <div className="mode-toggle-group">
               {[
@@ -157,7 +176,7 @@ export default function VideoRemover() {
             </div>
           </div>
 
-          <div className="tuner-sliders">
+          <div className={`tuner-sliders${showTuner ? '' : ' hidden'}`}>
             <div className="slider-group">
               <div className="tuner-slider-label">
                 <span>Strength (Gain)</span>
@@ -192,7 +211,7 @@ export default function VideoRemover() {
             </div>
           </div>
 
-          <div className="tuner-actions">
+          <div className={`tuner-actions${showTuner ? '' : ' hidden'}`}>
             <button className="btn btn-secondary text-xs" onClick={resetSliders}>
               <iconify-icon icon="ph:arrow-counter-clockwise"></iconify-icon> Reset Sliders
             </button>
