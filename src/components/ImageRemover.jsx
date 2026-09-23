@@ -17,7 +17,7 @@ async function doImageExport(file, engine, base, settings, previewFrame) {
 
   const { wm, imageData: resultData, modes } = applyMathStep(engine.bg96, imageData, width, height, base, settings);
   ctx.putImageData(resultData, 0, 0);
-  applyOverlaySteps(ctx, wm, modes);
+  applyOverlaySteps(ctx, wm, modes, settings.gain);
 
   const blob = await new Promise((r) => canvas.toBlob(r, 'image/png'));
   return {

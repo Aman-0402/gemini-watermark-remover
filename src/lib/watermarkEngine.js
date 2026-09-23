@@ -135,9 +135,14 @@ export function cleanFrame(bgImg, imageData, width, height, base, opts = {}) {
 // the pixels underneath. Guarantees no visible logo at the cost of a small
 // visible patch. Operates directly on a canvas 2D context (the frame must
 // already be drawn onto it).
-export function applyMaskToRegion(ctx, wm, mode) {
+export function applyMaskToRegion(ctx, wm, mode, strength = 1) {
   const { x, y, width, height } = wm;
   if (!width || !height) return;
+  // strength comes from the Gain slider (0.1–3, default ~0.6–1) so Blur
+  // and Pixelate actually respond to it instead of always using one fixed
+  // intensity. Blackout has no intermediate intensity — it's already
+  // maximum coverage.
+  const s = Math.min(Math.max(strength, 0.1), 3);
 
   if (mode === 'blackout') {
     ctx.fillStyle = '#050608';
@@ -146,7 +151,7 @@ export function applyMaskToRegion(ctx, wm, mode) {
   }
 
   if (mode === 'pixelate') {
-    const blockSize = Math.max(4, Math.round(width / 10));
+    const blockSize = Math.max(2, Math.round((width / 10) * s));
     const small = document.createElement('canvas');
     small.width = Math.max(1, Math.round(width / blockSize));
     small.height = Math.max(1, Math.round(height / blockSize));
@@ -160,7 +165,8 @@ export function applyMaskToRegion(ctx, wm, mode) {
   }
 
   if (mode === 'blur') {
-    const scale = 0.12;
+    // Higher strength -> smaller downscale -> blurrier result.
+    const scale = Math.min(0.35, Math.max(0.02, 0.14 / s));
     const small = document.createElement('canvas');
     small.width = Math.max(1, Math.round(width * scale));
     small.height = Math.max(1, Math.round(height * scale));
@@ -194,9 +200,9 @@ export function applyMathStep(bgImg, imageData, width, height, base, settings) {
   return { wm, roi, imageData: copy, modes };
 }
 
-export function applyOverlaySteps(ctx, wm, modes) {
+export function applyOverlaySteps(ctx, wm, modes, strength = 1) {
   ['blur', 'pixelate', 'blackout'].forEach((m) => {
-    if (modes.includes(m)) applyMaskToRegion(ctx, wm, m);
+    if (modes.includes(m)) applyMaskToRegion(ctx, wm, m, strength);
   });
 }
 
@@ -430,7 +436,7 @@ export class VideoWatermarkEngine {
 
       // Overlay modes stack on top, in fixed order, after the math step.
       ['blur', 'pixelate', 'blackout'].forEach((m) => {
-        if (modes.includes(m)) applyMaskToRegion(ctx, wm, m);
+        if (modes.includes(m)) applyMaskToRegion(ctx, wm, m, gain);
       });
 
       await videoSource.add(timestamp, dur);

@@ -55,7 +55,7 @@ export function useMediaRemover({
     const bgImg = getBgImg(engine);
     const { wm, roi, imageData: resultData, modes } = applyMathStep(bgImg, imageData, width, height, base, currentSettings);
     octx.putImageData(resultData, 0, 0);
-    applyOverlaySteps(octx, wm, modes);
+    applyOverlaySteps(octx, wm, modes, currentSettings.gain);
 
     const maxW = 360;
     const scale = Math.min(1, maxW / width);
