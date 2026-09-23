@@ -1,11 +1,11 @@
 import { useMediaRemover } from '../hooks/useMediaRemover';
 import { grabPreviewFrame, handleDownloadAd } from '../lib/mediaUtils';
-import { VideoWatermarkEngine } from '../lib/watermarkEngine';
+import { VideoWatermarkEngine, detectVideoWatermarkCandidate } from '../lib/watermarkEngine';
 
-// Fixed starting values for the Video Remover tuner (tuned for the current
-// Veo 3 watermark placement) — used for every video instead of running
-// auto-detection.
-const DEFAULT_VIDEO_SETTINGS = { gain: 0.6, offsetX: -26, offsetY: -24, sizeScale: 1.1 };
+// Used only when auto-detection can't find a confident match for a given
+// video (detectVideoWatermarkCandidate handles the common case, since a
+// single fixed preset can't align to every resolution/watermark size).
+const FALLBACK_VIDEO_SETTINGS = { gain: 0.6, offsetX: -26, offsetY: -24, sizeScale: 1.1 };
 
 async function doVideoExport(file, engine, base, settings, previewFrame, onProgress) {
   const res = await engine.process(file, {
@@ -31,8 +31,14 @@ export default function VideoRemover() {
     createEngine: VideoWatermarkEngine.create,
     getBase: (engine, w, h) => engine.getVeoWatermark(w, h),
     getBgImg: (engine) => engine.sparkleImage,
-    detectFn: () => null,
-    fallbackPreset: () => DEFAULT_VIDEO_SETTINGS,
+    detectFn: (imageData, w, h, bgImg) => {
+      const result = detectVideoWatermarkCandidate(imageData, w, h, bgImg);
+      // Only trust the detector when it found a confident match; otherwise
+      // fall through to the manually-tuned fallback below rather than the
+      // detector's own generic adaptive-offset guess.
+      return result.matchFound ? result : null;
+    },
+    fallbackPreset: () => FALLBACK_VIDEO_SETTINGS,
     grabFrame: grabPreviewFrame,
     doExport: doVideoExport,
   });
