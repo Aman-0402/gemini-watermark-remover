@@ -38,6 +38,29 @@ export function removeWatermark(imageData, alphaMap, position, options = {}) {
   }
 }
 
+// Strong unblend: applies a flat, uniform alpha across every pixel in the
+// watermark box, instead of scaling per-pixel by the reference sparkle
+// template's shape. The template-weighted approach (removeWatermark above)
+// can under-correct pixels the template considers low-alpha even though
+// the real watermark differs slightly in shape/size — this guarantees the
+// whole selected square gets the same full-strength correction.
+export function removeWatermarkUniform(imageData, wm, alpha) {
+  const a = Math.min(Math.max(alpha, 0), MAX_ALPHA);
+  if (a < ALPHA_THRESHOLD) return;
+  const { x, y, width, height } = wm;
+
+  for (let row = 0; row < height; row++) {
+    for (let col = 0; col < width; col++) {
+      const idx = ((y + row) * imageData.width + (x + col)) * 4;
+      for (let c = 0; c < 3; c++) {
+        const watermarked = imageData.data[idx + c];
+        const original = (watermarked - a * LOGO_VALUE) / (1.0 - a);
+        imageData.data[idx + c] = Math.max(0, Math.min(255, Math.round(original)));
+      }
+    }
+  }
+}
+
 export function getWatermarkInfo(width, height) {
   const minDim = Math.min(width, height);
   const ratio = minDim / 1536;
@@ -305,12 +328,12 @@ export class VideoWatermarkEngine {
       if (stats?.averagePacketRate) frameRate = Math.round(stats.averagePacketRate);
     } catch {}
 
-    const isMasked = opts.maskMode && opts.maskMode !== 'unblend';
+    const videoMode = opts.maskMode || 'unblend';
     const base = opts.mode === 'gemini' ? getWatermarkInfo(width, height) : this.getVeoWatermark(width, height);
     const wm = resolveBox(base, width, height, opts);
-    const roi = isMasked ? null : getRoi(width, height, wm);
-    const alpha = isMasked ? null : buildAlpha(this.engine.bg96, roi, wm, gain);
-    const region = isMasked ? null : { x: 0, y: 0, width: roi.width, height: roi.height };
+    const roi = videoMode === 'unblend' ? getRoi(width, height, wm) : null;
+    const alpha = videoMode === 'unblend' ? buildAlpha(this.engine.bg96, roi, wm, gain) : null;
+    const region = videoMode === 'unblend' ? { x: 0, y: 0, width: roi.width, height: roi.height } : null;
 
     const canvas = Object.assign(document.createElement('canvas'), { width, height });
     const ctx = canvas.getContext('2d', { willReadFrequently: true });
@@ -359,8 +382,14 @@ export class VideoWatermarkEngine {
       sample.draw(ctx, 0, 0, width, height);
       sample.close();
 
-      if (isMasked) {
-        applyMaskToRegion(ctx, wm, opts.maskMode);
+      if (videoMode === 'strong') {
+        const px = ctx.getImageData(wm.x, wm.y, wm.width, wm.height);
+        removeWatermarkUniform(px, { x: 0, y: 0, width: wm.width, height: wm.height }, gain);
+        const bmp = await createImageBitmap(px);
+        ctx.drawImage(bmp, wm.x, wm.y);
+        bmp.close();
+      } else if (videoMode !== 'unblend') {
+        applyMaskToRegion(ctx, wm, videoMode);
       } else {
         const px = ctx.getImageData(roi.x, roi.y, roi.width, roi.height);
         removeWatermark(px, alpha, region);

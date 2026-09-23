@@ -129,17 +129,18 @@ export default function VideoRemover() {
             <span className="mode-toggle-label">Removal Mode</span>
             <div className="mode-toggle-group">
               {[
-                { key: 'unblend', label: 'Unblend', icon: 'ph:magic-wand-bold' },
-                { key: 'blur', label: 'Blur', icon: 'ph:drop-half-bold' },
-                { key: 'pixelate', label: 'Pixelate', icon: 'ph:grid-four-bold' },
-                { key: 'blackout', label: 'Blackout', icon: 'ph:square-fill' },
+                { key: 'unblend', label: 'Unblend', icon: 'ph:magic-wand-bold', title: 'Mathematical alpha unblending (default, best quality)' },
+                { key: 'strong', label: 'Strong', icon: 'ph:lightning-bold', title: 'Full-strength unblending across the whole box, not just the sparkle shape — use if Unblend leaves residue' },
+                { key: 'blur', label: 'Blur', icon: 'ph:drop-half-bold', title: 'Cover the watermark with a blur instead of removing it' },
+                { key: 'pixelate', label: 'Pixelate', icon: 'ph:grid-four-bold', title: 'Cover the watermark with a pixelated block instead of removing it' },
+                { key: 'blackout', label: 'Blackout', icon: 'ph:square-fill', title: 'Cover the watermark with a solid fill instead of removing it' },
               ].map((m) => (
                 <button
                   key={m.key}
                   type="button"
                   className={`mode-btn${(settings.maskMode || 'unblend') === m.key ? ' active' : ''}`}
                   onClick={() => updateSetting('maskMode', m.key)}
-                  title={m.key === 'unblend' ? 'Mathematical alpha unblending (default, best quality)' : `Cover the watermark with ${m.label.toLowerCase()} instead of removing it`}
+                  title={m.title}
                 >
                   <iconify-icon icon={m.icon} width="14"></iconify-icon>
                   {m.label}

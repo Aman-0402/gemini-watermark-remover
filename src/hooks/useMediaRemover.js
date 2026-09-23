@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { cleanFrame, resolveBox, getRoi, applyMaskToRegion } from '../lib/watermarkEngine';
+import { cleanFrame, resolveBox, getRoi, applyMaskToRegion, removeWatermarkUniform } from '../lib/watermarkEngine';
 import { smoothScrollTo, handleExportAd } from '../lib/mediaUtils';
 
 // Shared dropzone/tuner/export state machine used by both the image and
@@ -52,14 +52,20 @@ export function useMediaRemover({
     offscreen.height = height;
     const octx = offscreen.getContext('2d');
 
-    const isMasked = currentSettings.maskMode && currentSettings.maskMode !== 'unblend';
+    const mode = currentSettings.maskMode || 'unblend';
     let wm, roi;
 
-    if (isMasked) {
+    if (mode === 'strong') {
+      wm = resolveBox(base, width, height, currentSettings);
+      roi = getRoi(width, height, wm);
+      const copy = new ImageData(new Uint8ClampedArray(imageData.data), width, height);
+      removeWatermarkUniform(copy, wm, currentSettings.gain);
+      octx.putImageData(copy, 0, 0);
+    } else if (mode !== 'unblend') {
       wm = resolveBox(base, width, height, currentSettings);
       roi = getRoi(width, height, wm);
       octx.putImageData(imageData, 0, 0);
-      applyMaskToRegion(octx, wm, currentSettings.maskMode);
+      applyMaskToRegion(octx, wm, mode);
     } else {
       const copy = new ImageData(new Uint8ClampedArray(imageData.data), width, height);
       const bgImg = getBgImg(engine);
