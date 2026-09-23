@@ -1,10 +1,11 @@
 import { useMediaRemover } from '../hooks/useMediaRemover';
 import { grabPreviewFrame, handleDownloadAd } from '../lib/mediaUtils';
-import {
-  VideoWatermarkEngine,
-  detectVideoWatermarkCandidate,
-  getAdaptiveVideoPreset,
-} from '../lib/watermarkEngine';
+import { VideoWatermarkEngine } from '../lib/watermarkEngine';
+
+// Fixed starting values for the Video Remover tuner (tuned for the current
+// Veo 3 watermark placement) — used for every video instead of running
+// auto-detection.
+const DEFAULT_VIDEO_SETTINGS = { gain: 0.6, offsetX: -26, offsetY: -24, sizeScale: 1.1 };
 
 async function doVideoExport(file, engine, base, settings, previewFrame, onProgress) {
   const res = await engine.process(file, {
@@ -30,8 +31,8 @@ export default function VideoRemover() {
     createEngine: VideoWatermarkEngine.create,
     getBase: (engine, w, h) => engine.getVeoWatermark(w, h),
     getBgImg: (engine) => engine.sparkleImage,
-    detectFn: detectVideoWatermarkCandidate,
-    fallbackPreset: (w, h) => getAdaptiveVideoPreset('veo', w, h),
+    detectFn: () => null,
+    fallbackPreset: () => DEFAULT_VIDEO_SETTINGS,
     grabFrame: grabPreviewFrame,
     doExport: doVideoExport,
   });
