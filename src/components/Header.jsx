@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
+import { Link, NavLink } from 'react-router-dom';
 
-export default function Header({ onNavVideo }) {
+export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [toolsOpen, setToolsOpen] = useState(false);
   const [stars, setStars] = useState('--');
@@ -38,21 +39,21 @@ export default function Header({ onNavVideo }) {
   return (
     <header className="app-header">
       <div className="header-container">
-        <a href="#" className="brand" title="Gemini Watermark Remover">
+        <Link to="/" className="brand" title="Gemini Watermark Remover">
           <img src="/assets/logo.webp" alt="Gemini Watermark Remover Logo" width="42" height="42" decoding="async"
             fetchpriority="high" style={{ objectFit: 'cover' }} />
           <div className="brand-text">
             <span className="brand-title">Gemini Watermark Remover</span>
           </div>
-        </a>
+        </Link>
 
         <nav className="nav-menu" aria-label="Main Navigation">
-          <a href="#panel-video" className="nav-link" onClick={onNavVideo}>Video Remover</a>
-          <a href="#how-it-works" className="nav-link">How it Works</a>
-          <a href="#guide" className="nav-link">Settings vs Tool</a>
-          <a href="#comparison" className="nav-link">Comparison</a>
-          <a href="#features" className="nav-link">Features</a>
-          <a href="#faq" className="nav-link">FAQ</a>
+          <NavLink to="/video" className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`}>Video Remover</NavLink>
+          <NavLink to="/how-it-works" className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`}>How it Works</NavLink>
+          <NavLink to="/guide" className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`}>Settings vs Tool</NavLink>
+          <Link to="/#comparison" className="nav-link">Comparison</Link>
+          <NavLink to="/features" className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`}>Features</NavLink>
+          <NavLink to="/faq" className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`}>FAQ</NavLink>
 
           <div className={`nav-dropdown${toolsOpen ? ' open' : ''}`} ref={toolsDropdownRef}>
             <button type="button" className="nav-link nav-dropdown-btn" aria-expanded={toolsOpen} aria-haspopup="true"
@@ -80,7 +81,7 @@ export default function Header({ onNavVideo }) {
 
               <div className="dropdown-divider"></div>
 
-              <a href="#" className="dropdown-item active-tool">
+              <Link to="/" className="dropdown-item active-tool">
                 <div className="dropdown-item-icon active-icon">
                   <img src="/assets/favicon-96x96.png" alt="Gemini Watermark Remover Favicon" className="tool-favicon-img"
                     width="22" height="22" loading="lazy" />
@@ -92,7 +93,7 @@ export default function Header({ onNavVideo }) {
                   </div>
                   <p className="dropdown-item-desc">Remove Gemini &amp; Veo 3 watermarks mathematically.</p>
                 </div>
-              </a>
+              </Link>
             </div>
           </div>
         </nav>
@@ -106,30 +107,30 @@ export default function Header({ onNavVideo }) {
 
         <div id="header-actions" ref={headerActionsRef} className={`header-actions${mobileOpen ? ' open' : ''}`}>
           <div className="mobile-nav-links">
-            <a href="#panel-video" className="mobile-nav-link" onClick={(e) => { onNavVideo(e); closeMobile(); }}>
+            <Link to="/video" className="mobile-nav-link" onClick={closeMobile}>
               <iconify-icon icon="ph:video-bold" width="18"></iconify-icon>
               <span>Video Remover</span>
-            </a>
-            <a href="#how-it-works" className="mobile-nav-link" onClick={closeMobile}>
+            </Link>
+            <Link to="/how-it-works" className="mobile-nav-link" onClick={closeMobile}>
               <iconify-icon icon="ph:info-bold" width="18"></iconify-icon>
               <span>How it Works</span>
-            </a>
-            <a href="#guide" className="mobile-nav-link" onClick={closeMobile}>
+            </Link>
+            <Link to="/guide" className="mobile-nav-link" onClick={closeMobile}>
               <iconify-icon icon="ph:book-open-bold" width="18"></iconify-icon>
               <span>Settings vs Tool</span>
-            </a>
-            <a href="#comparison" className="mobile-nav-link" onClick={closeMobile}>
+            </Link>
+            <Link to="/#comparison" className="mobile-nav-link" onClick={closeMobile}>
               <iconify-icon icon="ph:git-diff-bold" width="18"></iconify-icon>
               <span>Comparison</span>
-            </a>
-            <a href="#features" className="mobile-nav-link" onClick={closeMobile}>
+            </Link>
+            <Link to="/features" className="mobile-nav-link" onClick={closeMobile}>
               <iconify-icon icon="ph:shield-check-bold" width="18"></iconify-icon>
               <span>Features</span>
-            </a>
-            <a href="#faq" className="mobile-nav-link" onClick={closeMobile}>
+            </Link>
+            <Link to="/faq" className="mobile-nav-link" onClick={closeMobile}>
               <iconify-icon icon="ph:question-bold" width="18"></iconify-icon>
               <span>FAQ</span>
-            </a>
+            </Link>
 
             <div className="mobile-promo-card">
               <div className="mobile-promo-header">

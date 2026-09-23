@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 export function HowItWorks() {
   return (
     <section id="how-it-works" className="how-it-works-section">
@@ -80,7 +82,7 @@ export function Comparison() {
   );
 }
 
-export function Guide({ onNavImage }) {
+export function Guide() {
   return (
     <section id="guide" className="guide-section">
       <div className="guide-header">
@@ -127,10 +129,10 @@ export function Guide({ onNavImage }) {
           </ol>
 
           <div className="method-action">
-            <a href="#panel-image" className="btn btn-primary method-btn" onClick={onNavImage}>
+            <Link to="/" className="btn btn-primary method-btn">
               <iconify-icon icon="ph:arrow-up-bold" width="16"></iconify-icon>
               <span>Use Free Gemini Watermark Remover</span>
-            </a>
+            </Link>
           </div>
         </div>
 
@@ -203,7 +205,7 @@ export function Guide({ onNavImage }) {
   );
 }
 
-export function VideoGuide({ onNavVideo }) {
+export function VideoGuide() {
   return (
     <section id="video-guide" className="video-guide-section">
       <div className="video-guide-card">
@@ -253,10 +255,10 @@ export function VideoGuide({ onNavVideo }) {
         </div>
 
         <div className="video-guide-cta">
-          <a href="#panel-video" className="btn btn-primary method-btn" onClick={onNavVideo}>
+          <Link to="/video" className="btn btn-primary method-btn">
             <iconify-icon icon="ph:video-camera-bold" width="16"></iconify-icon>
             <span>Open Gemini Video Watermark Remover</span>
-          </a>
+          </Link>
         </div>
       </div>
     </section>
