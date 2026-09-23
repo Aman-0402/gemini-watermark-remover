@@ -43,6 +43,14 @@ export default function VideoRemover() {
     doExport: doVideoExport,
   });
 
+  const activeModes = settings.modes && settings.modes.length ? settings.modes : ['unblend'];
+  const toggleMode = (key) => {
+    const next = activeModes.includes(key)
+      ? activeModes.filter((k) => k !== key)
+      : [...activeModes, key];
+    updateSetting('modes', next.length ? next : ['unblend']);
+  };
+
   return (
     <section id="panel-video" className="card">
       <div className="remover-layout">
@@ -126,20 +134,20 @@ export default function VideoRemover() {
 
         <div ref={refs.tunerRef} id="video-tuner-container" className={`remover-right${showTuner ? '' : ' hidden'}`}>
           <div className="mode-toggle">
-            <span className="mode-toggle-label">Removal Mode</span>
+            <span className="mode-toggle-label">Removal Mode (combine any)</span>
             <div className="mode-toggle-group">
               {[
                 { key: 'unblend', label: 'Unblend', icon: 'ph:magic-wand-bold', title: 'Mathematical alpha unblending (default, best quality)' },
                 { key: 'strong', label: 'Strong', icon: 'ph:lightning-bold', title: 'Full-strength unblending across the whole box, not just the sparkle shape — use if Unblend leaves residue' },
-                { key: 'blur', label: 'Blur', icon: 'ph:drop-half-bold', title: 'Cover the watermark with a blur instead of removing it' },
-                { key: 'pixelate', label: 'Pixelate', icon: 'ph:grid-four-bold', title: 'Cover the watermark with a pixelated block instead of removing it' },
-                { key: 'blackout', label: 'Blackout', icon: 'ph:square-fill', title: 'Cover the watermark with a solid fill instead of removing it' },
+                { key: 'blur', label: 'Blur', icon: 'ph:drop-half-bold', title: 'Stack a blur on top of the box after the math step' },
+                { key: 'pixelate', label: 'Pixelate', icon: 'ph:grid-four-bold', title: 'Stack a pixelated block on top of the box after the math step' },
+                { key: 'blackout', label: 'Blackout', icon: 'ph:square-fill', title: 'Stack a solid fill on top of the box after the math step (always wins if checked)' },
               ].map((m) => (
                 <button
                   key={m.key}
                   type="button"
-                  className={`mode-btn${(settings.maskMode || 'unblend') === m.key ? ' active' : ''}`}
-                  onClick={() => updateSetting('maskMode', m.key)}
+                  className={`mode-btn${activeModes.includes(m.key) ? ' active' : ''}`}
+                  onClick={() => toggleMode(m.key)}
                   title={m.title}
                 >
                   <iconify-icon icon={m.icon} width="14"></iconify-icon>
