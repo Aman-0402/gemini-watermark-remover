@@ -50,15 +50,15 @@ $$\text{Original} = \frac{\text{Watermarked} - (\text{Logo} \times \alpha)}{1 - 
 
 ## 🛠️ Tech Stack
 
-- **Frontend:** Pure Semantic HTML5, Modern Vanilla CSS (Custom Design System), JavaScript (ES6+)
+- **Frontend:** React 18 + Vite, Modern Vanilla CSS (Custom Design System)
 - **Processing:** HTML5 Canvas API, WebCodecs API, [MediaBunny](https://github.com/diffusion-studio/mediabunny) for high-performance in-browser video unblending and AVC/H.264 muxing
 - **Hosting:** GitHub Pages
+
+A legacy pure HTML/CSS/vanilla-JS build of this site (pre-React) is kept in [`legacy/`](./legacy) for reference.
 
 ---
 
 ## 💻 Local Development
-
-Run the project locally with any static web server:
 
 ```bash
 # 1. Clone the repository
@@ -67,15 +67,16 @@ git clone https://github.com/ishara-madu/gemini-watermark-remover.git
 # 2. Navigate to project folder
 cd gemini-watermark-remover
 
-# 3. Start a local server (using Python 3, Node, or VS Code Live Server)
-# Option A: Python
-python3 -m http.server 8000
+# 3. Install dependencies
+npm install
 
-# Option B: Node.js (npx serve)
-npx serve .
+# 4. Start the Vite dev server
+npm run dev
 ```
 
-Open `http://localhost:8000` in your browser.
+Open the URL printed in the terminal (defaults to `http://localhost:5173/gemini-watermark-remover/`).
+
+To produce a production build: `npm run build` (outputs to `dist/`). Preview it locally with `npm run preview`.
 
 ---
 
