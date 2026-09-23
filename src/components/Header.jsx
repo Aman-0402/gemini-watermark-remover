@@ -46,10 +46,7 @@ export default function Header() {
         <nav className="nav-menu" aria-label="Main Navigation">
           <NavLink to="/video" className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`}>Video Remover</NavLink>
           <NavLink to="/how-it-works" className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`}>How it Works</NavLink>
-          <NavLink to="/guide" className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`}>Settings vs Tool</NavLink>
           <Link to="/#comparison" className="nav-link">Comparison</Link>
-          <NavLink to="/features" className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`}>Features</NavLink>
-          <NavLink to="/faq" className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`}>FAQ</NavLink>
         </nav>
 
         <button type="button" ref={menuBtnRef} className={`mobile-menu-toggle${mobileOpen ? ' active' : ''}`}
@@ -69,21 +66,9 @@ export default function Header() {
               <iconify-icon icon="ph:info-bold" width="18"></iconify-icon>
               <span>How it Works</span>
             </Link>
-            <Link to="/guide" className="mobile-nav-link" onClick={closeMobile}>
-              <iconify-icon icon="ph:book-open-bold" width="18"></iconify-icon>
-              <span>Settings vs Tool</span>
-            </Link>
             <Link to="/#comparison" className="mobile-nav-link" onClick={closeMobile}>
               <iconify-icon icon="ph:git-diff-bold" width="18"></iconify-icon>
               <span>Comparison</span>
-            </Link>
-            <Link to="/features" className="mobile-nav-link" onClick={closeMobile}>
-              <iconify-icon icon="ph:shield-check-bold" width="18"></iconify-icon>
-              <span>Features</span>
-            </Link>
-            <Link to="/faq" className="mobile-nav-link" onClick={closeMobile}>
-              <iconify-icon icon="ph:question-bold" width="18"></iconify-icon>
-              <span>FAQ</span>
             </Link>
           </div>
 

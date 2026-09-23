@@ -36,16 +36,12 @@ src/
     ToolTabs.jsx                   # Image/Video Remover tab switcher, NavLink to "/" and "/video"
     ImageRemover.jsx              # image tool panel (uses useMediaRemover)
     VideoRemover.jsx              # video tool panel (uses useMediaRemover)
-    PromoCard.jsx                  # results-screen cross-promo card
-    StaticSections.jsx             # HowItWorks, Comparison, Guide, VideoGuide, Features, Faq (pure SEO content, no state)
+    StaticSections.jsx             # HowItWorks, Comparison (pure SEO content, no state)
     Footer.jsx                      # footer + privacy/terms <dialog> modals
   pages/                          # one file per route, sets document.title, composes components/*
     HomePage.jsx                   # "/" — Hero + ToolTabs + ImageRemover + Comparison
     VideoPage.jsx                   # "/video" — Hero + ToolTabs + VideoRemover
     HowItWorksPage.jsx               # "/how-it-works"
-    GuidePage.jsx                     # "/guide" — Guide + VideoGuide
-    FeaturesPage.jsx                   # "/features"
-    FaqPage.jsx                         # "/faq"
 public/                        # served as-is at root: assets/, portfolio_images/, robots.txt, sitemap.xml
 legacy/                        # pre-React static site (index.html, main.js, style.css) — reference only, not built
 LICENSE (MIT)
