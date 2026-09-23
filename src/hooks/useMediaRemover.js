@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { cleanFrame } from '../lib/watermarkEngine';
+import { cleanFrame, resolveBox, getRoi, applyMaskToRegion } from '../lib/watermarkEngine';
 import { smoothScrollTo, handleExportAd } from '../lib/mediaUtils';
 
 // Shared dropzone/tuner/export state machine used by both the image and
@@ -32,7 +32,7 @@ export function useMediaRemover({
   const [isDragOver, setIsDragOver] = useState(false);
   const [showTuner, setShowTuner] = useState(false);
   const [detected, setDetected] = useState(null);
-  const [settings, setSettings] = useState({ gain: 0.6, offsetX: 0, offsetY: 0, sizeScale: 1 });
+  const [settings, setSettings] = useState({ gain: 0.6, offsetX: 0, offsetY: 0, sizeScale: 1, maskMode: 'unblend' });
   const [sliderRange, setSliderRange] = useState({ offsetXMin: -250, offsetXMax: 150, offsetYMin: -250, offsetYMax: 150 });
   const [isExporting, setIsExporting] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -50,11 +50,22 @@ export function useMediaRemover({
     const offscreen = document.createElement('canvas');
     offscreen.width = width;
     offscreen.height = height;
+    const octx = offscreen.getContext('2d');
 
-    const copy = new ImageData(new Uint8ClampedArray(imageData.data), width, height);
-    const bgImg = getBgImg(engine);
-    const { wm, roi } = cleanFrame(bgImg, copy, width, height, base, currentSettings);
-    offscreen.getContext('2d').putImageData(copy, 0, 0);
+    const isMasked = currentSettings.maskMode && currentSettings.maskMode !== 'unblend';
+    let wm, roi;
+
+    if (isMasked) {
+      wm = resolveBox(base, width, height, currentSettings);
+      roi = getRoi(width, height, wm);
+      octx.putImageData(imageData, 0, 0);
+      applyMaskToRegion(octx, wm, currentSettings.maskMode);
+    } else {
+      const copy = new ImageData(new Uint8ClampedArray(imageData.data), width, height);
+      const bgImg = getBgImg(engine);
+      ({ wm, roi } = cleanFrame(bgImg, copy, width, height, base, currentSettings));
+      octx.putImageData(copy, 0, 0);
+    }
 
     const maxW = 360;
     const scale = Math.min(1, maxW / width);
@@ -105,6 +116,7 @@ export function useMediaRemover({
           sizeScale: detectedResult.sizeScale,
         }
       : fallbackPreset(w, h);
+    p.maskMode = p.maskMode || 'unblend';
 
     setSliderRange({
       offsetXMin: -Math.round(w * 0.45),

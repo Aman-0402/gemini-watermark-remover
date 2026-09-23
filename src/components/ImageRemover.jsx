@@ -3,19 +3,28 @@ import { grabImageFrame, handleDownloadAd } from '../lib/mediaUtils';
 import {
   WatermarkEngine,
   cleanFrame,
+  resolveBox,
+  applyMaskToRegion,
   detectWatermarkCandidate,
   getAdaptiveImagePreset,
 } from '../lib/watermarkEngine';
 
 async function doImageExport(file, engine, base, settings, previewFrame) {
   const { width, height, imageData } = previewFrame;
-  const copy = new ImageData(new Uint8ClampedArray(imageData.data), width, height);
-  cleanFrame(engine.bg96, copy, width, height, base, settings);
-
   const canvas = document.createElement('canvas');
   canvas.width = width;
   canvas.height = height;
-  canvas.getContext('2d').putImageData(copy, 0, 0);
+  const ctx = canvas.getContext('2d');
+
+  if (settings.maskMode && settings.maskMode !== 'unblend') {
+    ctx.putImageData(imageData, 0, 0);
+    const wm = resolveBox(base, width, height, settings);
+    applyMaskToRegion(ctx, wm, settings.maskMode);
+  } else {
+    const copy = new ImageData(new Uint8ClampedArray(imageData.data), width, height);
+    cleanFrame(engine.bg96, copy, width, height, base, settings);
+    ctx.putImageData(copy, 0, 0);
+  }
 
   const blob = await new Promise((r) => canvas.toBlob(r, 'image/png'));
   return {
@@ -124,6 +133,29 @@ export default function ImageRemover() {
         </div>
 
         <div ref={refs.tunerRef} id="img-tuner-container" className={`remover-right${showTuner ? '' : ' hidden'}`}>
+          <div className="mode-toggle">
+            <span className="mode-toggle-label">Removal Mode</span>
+            <div className="mode-toggle-group">
+              {[
+                { key: 'unblend', label: 'Unblend', icon: 'ph:magic-wand-bold' },
+                { key: 'blur', label: 'Blur', icon: 'ph:drop-half-bold' },
+                { key: 'pixelate', label: 'Pixelate', icon: 'ph:grid-four-bold' },
+                { key: 'blackout', label: 'Blackout', icon: 'ph:square-fill' },
+              ].map((m) => (
+                <button
+                  key={m.key}
+                  type="button"
+                  className={`mode-btn${(settings.maskMode || 'unblend') === m.key ? ' active' : ''}`}
+                  onClick={() => updateSetting('maskMode', m.key)}
+                  title={m.key === 'unblend' ? 'Mathematical alpha unblending (default, best quality)' : `Cover the watermark with ${m.label.toLowerCase()} instead of removing it`}
+                >
+                  <iconify-icon icon={m.icon} width="14"></iconify-icon>
+                  {m.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
           <div className="tuner-sliders">
             <div className="slider-group">
               <div className="tuner-slider-label">
