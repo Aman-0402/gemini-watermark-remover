@@ -1,9 +1,9 @@
 # AGENTS.md — Gemini Watermark Remover
 
 ## What this is
-Client-side-only website that removes Google Gemini/Imagen 3/Veo 3 visible watermarks from images and videos via mathematical alpha-unblending (no AI inpainting, no server upload). Hosted on GitHub Pages: https://ishara-madu.github.io/gemini-watermark-remover/
+Client-side-only website that removes Google Gemini/Imagen 3/Veo 3 visible watermarks from images and videos via mathematical alpha-unblending (no AI inpainting, no server upload). Hosted on GitHub Pages: https://aman-0402.github.io/gemini-watermark-remover/
 
-Author: Ishara M. (https://ishara-madu.github.io/)
+Author: Aman (https://github.com/Aman-0402)
 License: MIT
 
 ## Tech Stack
@@ -73,7 +73,7 @@ Tunable params exposed to user via sliders: **Gain** (alpha strength multiplier,
 ## Key Conventions
 - Components use `.jsx` extension, function components + hooks only, no class components.
 - `iconify-icon` is used directly as a lowercase custom element in JSX (e.g. `<iconify-icon icon="ph:eraser-bold">`) — works because the CDN script registers it as a real Web Component; React passes through unrecognized props as DOM attributes.
-- Assets in `public/` are referenced with root-absolute paths (`/assets/...`) in components; Vite prefixes these with `base` (`/gemini-watermark-remover/`) automatically at build. `<head>` meta/link tags in `index.html` still use **absolute canonical URLs** (`https://ishara-madu.github.io/...`) for OG/Twitter/JSON-LD — keep this distinction when editing.
+- Assets in `public/` are referenced with root-absolute paths (`/assets/...`) in components; Vite prefixes these with `base` (`/gemini-watermark-remover/`) automatically at build. `<head>` meta/link tags in `index.html` still use **absolute canonical URLs** (`https://aman-0402.github.io/gemini-watermark-remover/...`) for OG/Twitter/JSON-LD — keep this distinction when editing.
 - Heavy SEO investment: JSON-LD structured data (SoftwareApplication, WebSite, BreadcrumbList, HowTo, FAQPage) lives as a static `<script type="application/ld+json">` in `index.html` `<head>` and must stay in sync with `Faq` content in `src/components/StaticSections.jsx` if either changes.
 - 100% client-side/private is a core product claim (repeated in README, meta description, privacy modal) — never introduce server upload of user media without flagging it as a breaking claim change.
 - Don't edit `legacy/` — it's a frozen snapshot of the pre-conversion site, kept for reference only.

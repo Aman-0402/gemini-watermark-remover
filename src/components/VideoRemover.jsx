@@ -5,7 +5,6 @@ import {
   detectVideoWatermarkCandidate,
   getAdaptiveVideoPreset,
 } from '../lib/watermarkEngine';
-import PromoCard from './PromoCard';
 
 async function doVideoExport(file, engine, base, settings, previewFrame, onProgress) {
   const res = await engine.process(file, {
@@ -189,7 +188,6 @@ export default function VideoRemover() {
                 Download Cleaned Video MP4
               </a>
             </div>
-            <PromoCard />
           </div>
         )}
       </div>

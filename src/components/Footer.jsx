@@ -9,8 +9,8 @@ export default function Footer() {
       <footer className="app-footer">
         <div className="footer-content">
           <p className="footer-credit">
-            Designed &amp; Developed by <a href="https://ishara-madu.github.io/" target="_blank" rel="noopener noreferrer"
-              className="footer-author-link"><strong>Ishara M.</strong></a>
+            Designed &amp; Developed by <a href="https://github.com/Aman-0402" target="_blank" rel="noopener noreferrer"
+              className="footer-author-link"><strong>Aman</strong></a>
           </p>
 
           <div className="footer-links">
@@ -18,13 +18,9 @@ export default function Footer() {
             <span className="footer-dot">•</span>
             <button type="button" className="footer-link-btn" onClick={() => termsRef.current?.showModal()}>Terms of Service</button>
             <span className="footer-dot">•</span>
-            <a href="https://github.com/ishara-madu/gemini-watermark-remover" target="_blank" rel="noopener noreferrer"
+            <a href="https://github.com/Aman-0402/gemini-watermark-remover" target="_blank" rel="noopener noreferrer"
               className="footer-link">
               <iconify-icon icon="ph:github-logo-bold" width="14"></iconify-icon> GitHub
-            </a>
-            <span className="footer-dot">•</span>
-            <a href="https://buymeacoffee.com/ishara.madu" target="_blank" rel="noopener noreferrer" className="footer-link">
-              <iconify-icon icon="ph:heart-fill" width="14" style={{ color: '#f43f5e' }}></iconify-icon> Support
             </a>
           </div>
 

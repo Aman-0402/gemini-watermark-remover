@@ -6,7 +6,6 @@ import {
   detectWatermarkCandidate,
   getAdaptiveImagePreset,
 } from '../lib/watermarkEngine';
-import PromoCard from './PromoCard';
 
 async function doImageExport(file, engine, base, settings, previewFrame) {
   const { width, height, imageData } = previewFrame;
@@ -191,7 +190,6 @@ export default function ImageRemover() {
                 Download Cleaned PNG
               </a>
             </div>
-            <PromoCard />
           </div>
         )}
       </div>
