@@ -5,7 +5,7 @@ import { VideoWatermarkEngine, detectVideoWatermarkCandidate } from '../lib/wate
 // Used only when auto-detection can't find a confident match for a given
 // video (detectVideoWatermarkCandidate handles the common case, since a
 // single fixed preset can't align to every resolution/watermark size).
-const FALLBACK_VIDEO_SETTINGS = { gain: 0.6, offsetX: -26, offsetY: -24, sizeScale: 1.1 };
+const FALLBACK_VIDEO_SETTINGS = { gain: 0.95, offsetX: -26, offsetY: -25, sizeScale: 1.05 };
 
 async function doVideoExport(file, engine, base, settings, previewFrame, onProgress) {
   const res = await engine.process(file, {
