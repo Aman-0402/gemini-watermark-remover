@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
+import { asset } from '../lib/assetUrl';
 
 export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -35,7 +36,7 @@ export default function Header() {
     <header className="app-header">
       <div className="header-container">
         <Link to="/" className="brand" title="Gemini Watermark Remover">
-          <img src="/assets/logo.webp" alt="Gemini Watermark Remover Logo" width="42" height="42" decoding="async"
+          <img src={asset('/assets/logo.webp')} alt="Gemini Watermark Remover Logo" width="42" height="42" decoding="async"
             fetchpriority="high" style={{ objectFit: 'cover' }} />
           <div className="brand-text">
             <span className="brand-title">Gemini Watermark Remover</span>

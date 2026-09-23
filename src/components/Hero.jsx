@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { asset } from '../lib/assetUrl';
 
 export default function Hero({ variant = 'image' }) {
   const isVideo = variant === 'video';
@@ -13,14 +14,14 @@ export default function Hero({ variant = 'image' }) {
             <>
               The fastest way to <strong>remove the Gemini watermark from Veo 3 videos</strong> — mathematical alpha
               unblending frame-by-frame, with{' '}
-              <strong style={{ color: '#64748b' }}>full audio preservation</strong>. 100% free, secure, and processed
-              completely inside your browser with <strong style={{ color: '#64748b' }}>zero quality loss</strong>.
+              <strong style={{ color: 'var(--text-main)' }}>full audio preservation</strong>. 100% free, secure, and processed
+              completely inside your browser with <strong style={{ color: 'var(--text-main)' }}>zero quality loss</strong>.
             </>
           ) : (
             <>
               The fastest way to <strong>remove Gemini watermark</strong> and erase Google AI logo sparkles from your{' '}
-              <strong style={{ color: '#64748b' }}>images and Veo 3 videos</strong>. 100% free, secure, and processed completely inside
-              your browser with <strong style={{ color: '#64748b' }}>zero quality loss</strong>.
+              <strong style={{ color: 'var(--text-main)' }}>images and Veo 3 videos</strong>. 100% free, secure, and processed completely inside
+              your browser with <strong style={{ color: 'var(--text-main)' }}>zero quality loss</strong>.
             </>
           )}
         </p>
@@ -34,14 +35,14 @@ export default function Hero({ variant = 'image' }) {
 
       <div className="hero-bg-frame-container left" aria-hidden="true">
         <div className="hero-bg-frame">
-          <img src="/assets/bg1.webp" alt="Gemini watermark removal preview illustration" className="hero-bg-img" width="250"
+          <img src={asset('/assets/bg1.webp')} alt="Gemini watermark removal preview illustration" className="hero-bg-img" width="250"
             height="250" loading="lazy" decoding="async" fetchpriority="low" />
         </div>
       </div>
 
       <div className="hero-bg-frame-container right" aria-hidden="true">
         <div className="hero-bg-frame">
-          <img src="/assets/bg2.webp" alt="Veo 3 AI video watermark removal preview illustration" className="hero-bg-img"
+          <img src={asset('/assets/bg2.webp')} alt="Veo 3 AI video watermark removal preview illustration" className="hero-bg-img"
             width="350" height="350" loading="lazy" decoding="async" fetchpriority="low" />
         </div>
       </div>

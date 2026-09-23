@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { asset } from '../lib/assetUrl';
 
 export function HowItWorks() {
   return (
@@ -60,7 +61,7 @@ export function Comparison() {
               <iconify-icon icon="ph:x-circle" width="14"></iconify-icon> Before
             </span>
             <div className="comparison-img-wrapper checker">
-              <img src="/assets/before.webp"
+              <img src={asset('/assets/before.webp')}
                 alt="Google Gemini image with visible watermark logo before removal" width="400"
                 height="400" loading="lazy" decoding="async" />
             </div>
@@ -71,7 +72,7 @@ export function Comparison() {
               <iconify-icon icon="ph:check-circle" width="14"></iconify-icon> After
             </span>
             <div className="comparison-img-wrapper checker">
-              <img src="/assets/after.webp"
+              <img src={asset('/assets/after.webp')}
                 alt="Clean Google Gemini image after watermark and logo removal with zero quality loss"
                 width="400" height="400" loading="lazy" decoding="async" />
             </div>
