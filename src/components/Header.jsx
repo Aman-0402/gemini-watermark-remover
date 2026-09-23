@@ -80,6 +80,11 @@ export default function Header() {
               <span>{stars}</span>
               <span className="btn-github-label">Stars</span>
             </a>
+            <a href="https://www.youtube.com/@AkaRJLive" target="_blank" rel="noopener noreferrer"
+              className="btn-subscribe" title="Subscribe on YouTube">
+              <iconify-icon icon="ph:youtube-logo-bold" width="18"></iconify-icon>
+              <span>Subscribe</span>
+            </a>
           </div>
         </div>
       </div>

@@ -44,125 +44,129 @@ export default function ImageRemover() {
 
   return (
     <section id="panel-image" className="card">
-      <div
-        id="img-dropzone"
-        className={`dropzone${isDragOver ? ' drag-over' : ''}${isProcessing ? ' loading' : ''}`}
-        onClick={() => !isProcessing && document.getElementById('img-input').click()}
-        onDragOver={onDragOver}
-        onDragLeave={onDragLeave}
-        onDrop={onDrop}
-      >
-        {isProcessing ? (
-          <div className="dropzone-loader">
-            <div className="dropzone-spinner"></div>
-            <p className="dropzone-title text-indigo-600">Processing &amp; Detecting Watermark...</p>
-            <p className="dropzone-sub">Please wait, analyzing watermark...</p>
-          </div>
-        ) : (
-          <>
-            <div className="dropzone-icon">
-              <iconify-icon icon="ph:upload-simple-bold"></iconify-icon>
-            </div>
-            <p className="dropzone-title">Upload or drag your Gemini Image</p>
-            <p className="dropzone-sub">Supports PNG, JPG, WebP</p>
-          </>
-        )}
-        <input id="img-input" type="file" accept="image/*" className="hidden" onChange={onInputChange} />
-      </div>
-
-      {error && <p className="text-center text-xs mt-2" style={{ color: '#dc2626' }}>{error}</p>}
-
-      <div ref={refs.tunerRef} id="img-tuner-container" className={`tuner-container${showTuner ? '' : ' hidden'}`}>
-        {detected && (
-          <div className={`detect-badge${detected.matchFound ? '' : ' warning'}`}>
-            {detected.matchFound ? (
-              <>
-                <iconify-icon icon="ph:scan" width="16" style={{ color: '#6366f1' }}></iconify-icon>
-                <span>Auto-Detected: <strong>{detected.name}</strong> ({Math.round(detected.score * 100)}% match)</span>
-              </>
+      <div className="remover-layout">
+        <div className="remover-left">
+          <div
+            id="img-dropzone"
+            className={`dropzone${isDragOver ? ' drag-over' : ''}${isProcessing ? ' loading' : ''}`}
+            onClick={() => !isProcessing && document.getElementById('img-input').click()}
+            onDragOver={onDragOver}
+            onDragLeave={onDragLeave}
+            onDrop={onDrop}
+          >
+            {isProcessing ? (
+              <div className="dropzone-loader">
+                <div className="dropzone-spinner"></div>
+                <p className="dropzone-title text-indigo-600">Processing &amp; Detecting Watermark...</p>
+                <p className="dropzone-sub">Please wait, analyzing watermark...</p>
+              </div>
             ) : (
               <>
-                <iconify-icon icon="ph:info" width="16" style={{ color: '#d97706' }}></iconify-icon>
-                <span>Standard Preset Applied ({detected.name})</span>
+                <div className="dropzone-icon">
+                  <iconify-icon icon="ph:upload-simple-bold"></iconify-icon>
+                </div>
+                <p className="dropzone-title">Upload or drag your Gemini Image</p>
+                <p className="dropzone-sub">Supports PNG, JPG, WebP</p>
               </>
             )}
+            <input id="img-input" type="file" accept="image/*" className="hidden" onChange={onInputChange} />
           </div>
-        )}
 
-        <div className="tuner-preview-row">
-          <div className="tuner-canvas-box main-box">
-            <span className="canvas-title">
-              <iconify-icon icon="ph:frame-corners" width="14"></iconify-icon>
-              Preview (Full Frame)
-            </span>
-            <div className="canvas-wrapper">
-              <canvas ref={refs.mainCanvasRef} id="img-main-canvas"></canvas>
+          {error && <p className="text-center text-xs mt-2" style={{ color: '#dc2626' }}>{error}</p>}
+
+          {detected && (
+            <div className={`detect-badge${detected.matchFound ? '' : ' warning'}`}>
+              {detected.matchFound ? (
+                <>
+                  <iconify-icon icon="ph:scan" width="16" style={{ color: '#6366f1' }}></iconify-icon>
+                  <span>Auto-Detected: <strong>{detected.name}</strong> ({Math.round(detected.score * 100)}% match)</span>
+                </>
+              ) : (
+                <>
+                  <iconify-icon icon="ph:info" width="16" style={{ color: '#d97706' }}></iconify-icon>
+                  <span>Standard Preset Applied ({detected.name})</span>
+                </>
+              )}
             </div>
-          </div>
-          <div className="tuner-canvas-box zoom-box">
-            <div className="zoom-card">
-              <span className="canvas-title text-blue-600">
-                <iconify-icon icon="ph:magnifying-glass-plus" width="14"></iconify-icon>
-                Zoomed Original
+          )}
+
+          <div className={`tuner-preview-row${showTuner ? '' : ' hidden'}`}>
+            <div className="tuner-canvas-box main-box">
+              <span className="canvas-title">
+                <iconify-icon icon="ph:frame-corners" width="14"></iconify-icon>
+                Preview (Full Frame)
               </span>
               <div className="canvas-wrapper">
-                <canvas ref={refs.zoomCanvasRef} id="img-zoom-canvas" width="200" height="200"></canvas>
+                <canvas ref={refs.mainCanvasRef} id="img-main-canvas"></canvas>
               </div>
             </div>
-            <div className="zoom-card">
-              <span className="canvas-title text-green-600">
-                <iconify-icon icon="ph:check-circle" width="14"></iconify-icon>
-                Zoomed Cleaned
-              </span>
-              <div className="canvas-wrapper">
-                <canvas ref={refs.zoomCleanedCanvasRef} id="img-zoom-cleaned-canvas" width="200" height="200"></canvas>
+            <div className="tuner-canvas-box zoom-box">
+              <div className="zoom-card">
+                <span className="canvas-title text-blue-600">
+                  <iconify-icon icon="ph:magnifying-glass-plus" width="14"></iconify-icon>
+                  Zoomed Original
+                </span>
+                <div className="canvas-wrapper">
+                  <canvas ref={refs.zoomCanvasRef} id="img-zoom-canvas" width="200" height="200"></canvas>
+                </div>
+              </div>
+              <div className="zoom-card">
+                <span className="canvas-title text-green-600">
+                  <iconify-icon icon="ph:check-circle" width="14"></iconify-icon>
+                  Zoomed Cleaned
+                </span>
+                <div className="canvas-wrapper">
+                  <canvas ref={refs.zoomCleanedCanvasRef} id="img-zoom-cleaned-canvas" width="200" height="200"></canvas>
+                </div>
               </div>
             </div>
           </div>
         </div>
 
-        <div className="tuner-sliders mt-4">
-          <div className="slider-group">
-            <div className="tuner-slider-label">
-              <span>Strength (Gain)</span>
-              <span>{settings.gain.toFixed(2)}x</span>
+        <div ref={refs.tunerRef} id="img-tuner-container" className={`remover-right${showTuner ? '' : ' hidden'}`}>
+          <div className="tuner-sliders">
+            <div className="slider-group">
+              <div className="tuner-slider-label">
+                <span>Strength (Gain)</span>
+                <span>{settings.gain.toFixed(2)}x</span>
+              </div>
+              <input type="range" min="0.1" max="3" step="0.05" value={settings.gain}
+                onChange={(e) => updateSetting('gain', parseFloat(e.target.value))} />
             </div>
-            <input type="range" min="0.1" max="3" step="0.05" value={settings.gain}
-              onChange={(e) => updateSetting('gain', parseFloat(e.target.value))} />
-          </div>
-          <div className="slider-group">
-            <div className="tuner-slider-label">
-              <span>Size Scale</span>
-              <span>{settings.sizeScale.toFixed(2)}x</span>
+            <div className="slider-group">
+              <div className="tuner-slider-label">
+                <span>Size Scale</span>
+                <span>{settings.sizeScale.toFixed(2)}x</span>
+              </div>
+              <input type="range" min="0.5" max="2" step="0.05" value={settings.sizeScale}
+                onChange={(e) => updateSetting('sizeScale', parseFloat(e.target.value))} />
             </div>
-            <input type="range" min="0.5" max="2" step="0.05" value={settings.sizeScale}
-              onChange={(e) => updateSetting('sizeScale', parseFloat(e.target.value))} />
-          </div>
-          <div className="slider-group">
-            <div className="tuner-slider-label">
-              <span>Position X</span>
-              <span>{settings.offsetX}px</span>
+            <div className="slider-group">
+              <div className="tuner-slider-label">
+                <span>Position X</span>
+                <span>{settings.offsetX}px</span>
+              </div>
+              <input type="range" min={sliderRange.offsetXMin} max={sliderRange.offsetXMax} step="1" value={settings.offsetX}
+                onChange={(e) => updateSetting('offsetX', parseInt(e.target.value, 10))} />
             </div>
-            <input type="range" min={sliderRange.offsetXMin} max={sliderRange.offsetXMax} step="1" value={settings.offsetX}
-              onChange={(e) => updateSetting('offsetX', parseInt(e.target.value, 10))} />
-          </div>
-          <div className="slider-group">
-            <div className="tuner-slider-label">
-              <span>Position Y</span>
-              <span>{settings.offsetY}px</span>
+            <div className="slider-group">
+              <div className="tuner-slider-label">
+                <span>Position Y</span>
+                <span>{settings.offsetY}px</span>
+              </div>
+              <input type="range" min={sliderRange.offsetYMin} max={sliderRange.offsetYMax} step="1" value={settings.offsetY}
+                onChange={(e) => updateSetting('offsetY', parseInt(e.target.value, 10))} />
             </div>
-            <input type="range" min={sliderRange.offsetYMin} max={sliderRange.offsetYMax} step="1" value={settings.offsetY}
-              onChange={(e) => updateSetting('offsetY', parseInt(e.target.value, 10))} />
           </div>
-        </div>
 
-        <div className="tuner-actions">
-          <button className="btn btn-secondary text-xs" onClick={resetSliders}>
-            <iconify-icon icon="ph:arrow-counter-clockwise"></iconify-icon> Reset Sliders
-          </button>
-          <button className="btn btn-primary" onClick={runExport}>
-            <iconify-icon icon="ph:eraser"></iconify-icon> Remove &amp; Export Image
-          </button>
+          <div className="tuner-actions">
+            <button className="btn btn-secondary text-xs" onClick={resetSliders}>
+              <iconify-icon icon="ph:arrow-counter-clockwise"></iconify-icon> Reset Sliders
+            </button>
+            <button className="btn btn-primary" onClick={runExport}>
+              <iconify-icon icon="ph:eraser"></iconify-icon> Remove &amp; Export Image
+            </button>
+          </div>
         </div>
       </div>
 
