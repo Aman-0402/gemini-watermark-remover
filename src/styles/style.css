@@ -45,6 +45,18 @@
   --transition-normal: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* Video page gets its own accent (fuchsia/pink) instead of the default
+   indigo/violet, so it reads as a distinct page rather than a reskin of
+   Home — same components, different brand variables cascading through. */
+.page-video {
+  --brand-primary: #d946ef;
+  --brand-primary-hover: #e879f9;
+  --brand-violet: #f472b6;
+  --brand-gradient: linear-gradient(135deg, #f472b6 0%, #d946ef 45%, #a855f7 100%);
+  --brand-glow: rgba(217, 70, 239, 0.35);
+  --shadow-glow: 0 0 0 1px rgba(217, 70, 239, 0.4), 0 8px 28px -6px rgba(217, 70, 239, 0.45);
+}
+
 html {
   scroll-behavior: smooth;
 }

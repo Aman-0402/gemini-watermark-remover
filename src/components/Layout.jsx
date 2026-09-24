@@ -18,8 +18,10 @@ export default function Layout() {
     window.scrollTo(0, 0);
   }, [location.pathname, location.hash]);
 
+  const isVideoPage = location.pathname.startsWith('/video');
+
   return (
-    <main className="container">
+    <main className={`container${isVideoPage ? ' page-video' : ''}`}>
       <Header />
       <Outlet />
       <Footer />
