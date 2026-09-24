@@ -33,14 +33,14 @@ export default function Hero({ variant = 'image' }) {
         </div>
       </div>
 
-      <div className="hero-bg-frame-container left" aria-hidden="true">
+      <div className={`hero-bg-frame-container ${isVideo ? 'right' : 'left'}`} aria-hidden="true">
         <div className="hero-bg-frame">
           <img src={asset('/assets/bg1.webp')} alt="Gemini watermark removal preview illustration" className="hero-bg-img" width="250"
             height="250" loading="lazy" decoding="async" fetchpriority="low" />
         </div>
       </div>
 
-      <div className="hero-bg-frame-container right" aria-hidden="true">
+      <div className={`hero-bg-frame-container ${isVideo ? 'left' : 'right'}`} aria-hidden="true">
         <div className="hero-bg-frame">
           <img src={asset('/assets/bg2.webp')} alt="Veo 3 AI video watermark removal preview illustration" className="hero-bg-img"
             width="350" height="350" loading="lazy" decoding="async" fetchpriority="low" />
