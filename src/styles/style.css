@@ -366,7 +366,7 @@ h1, h2, h3, h4, .brand-title, .btn, .tab-btn {
 
 .hero-bg-frame-container.left {
   top: 180px;
-  left: -10%;
+  left: -40px;
   width: 250px;
   height: 250px;
 }
@@ -377,7 +377,7 @@ h1, h2, h3, h4, .brand-title, .btn, .tab-btn {
 
 .hero-bg-frame-container.right {
   top: 220px;
-  right: -18%;
+  right: -40px;
   left: auto;
   width: 350px;
   height: 350px;
